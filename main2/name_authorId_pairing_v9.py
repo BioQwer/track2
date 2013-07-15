@@ -29,10 +29,7 @@ def main():
 	with open(sys.argv[1], 'rb') as f:
 		more_name_dict = pickle.load(f)
 
-	if os.path.isfile('/tmp2/Simplex/kdd2013/competition/pkl/dedup_Ids.pkl'):
-		with open('/tmp2/Simplex/kdd2013/competition/pkl/dedup_Ids.pkl', 'rb') as f:
-			dedup_Ids = pickle.load(f)
-	elif os.path.isfile('dedup_Ids.pkl'):
+	if os.path.isfile('dedup_Ids.pkl'):
 		with open('dedup_Ids.pkl', 'rb') as f:
 			dedup_Ids = pickle.load(f)
 	else:
