@@ -8,5 +8,5 @@ python split.py
 echo 4 get typo list
 python similar.py
 echo 5 select more confident ones and generate csv file
-./2stage.py
+python 2stage.py
 mv typo.csv ../buff
