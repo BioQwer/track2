@@ -20,6 +20,7 @@ buff/main.csv: buff/track2.dump
 buff/track2.dump: buff/chinese_author.less $(CSV)
 	./pre/build_all_info_athr.py data/Author.csv data/Paper.csv data/PaperAuthor.csv buff/chinese_author.less buff/track2.dump
 
+# Difference to .less version is inclusion of TW.raw & KR.raw
 buff/track2_cn.dump: buff/chinese_author.more $(CSV)
 	./pre/build_all_info_cn_athr.py data/Author.csv data/Paper.csv data/PaperAuthor.csv buff/chinese_author.more buff/track2_cn.dump
 #
