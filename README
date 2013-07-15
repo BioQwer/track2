@@ -51,6 +51,10 @@ C. Make a prediction step-by-step:
             1-3. Perl5 (test with version 5.10)
             1-4. Perl module Text::CSV
             1-5. Raw data (dataRev2.zip). The zipped file should be stored at the top directory of this package 
+            
+            Python package jellyfish is required by typo.  Install with:
+
+              $ sudo pip install jellyfish
 
     2. Run:
         Type 'make'.
