@@ -1,4 +1,4 @@
-RAWDIR:="../data"
+RAWDIR:=../data
 CSV = data/Author.csv data/Paper.csv data/PaperAuthor.csv
 
 all: final.csv 
@@ -33,13 +33,12 @@ buff/chinese_author.less: $(CSV)
 
 $(CSV):
 	mkdir -p data
-	cp $(RAWDIR)/Author.csv data
-	cp $(RAWDIR)/Paper.csv data
-	cp $(RAWDIR)/PaperAuthor.csv data
+	# Copy data files without header line
+	tail -n +2 $(RAWDIR)/Author.csv > data/Author.csv
+	tail -n +2 $(RAWDIR)/Paper.csv > data/Paper.csv
+	tail -n +2 $(RAWDIR)/PaperAuthor.csv > data/PaperAuthor.csv
 	chmod +w data/*
-	main/scripts/rmheader.sh data/Author.csv
-	main/scripts/rmheader.sh data/Paper.csv
-	main/scripts/rmheader.sh data/PaperAuthor.csv
+
 	
 clean:
 	rm -rf buff/* data/* pre/kddcup2013wschin_more/kdd2013/Author.csv* pre/kddcup2013wschin_more/Author.csv* pre/kddcup2013wschin_less/kdd2013/Author.csv* pre/kddcup2013wschin_less/Author.csv* main/kdd/__pycache__/ post/kdd/__pycache__/
