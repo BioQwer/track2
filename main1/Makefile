@@ -2,7 +2,7 @@ RAWDIR:=../data
 CSV = data/Author.csv data/Paper.csv data/PaperAuthor.csv
 
 all: final.csv 
-	
+
 final.csv: buff/main.csv buff/track2_cn.dump
 	./post/new_build_pair_cn_athr.py buff/track2_cn.dump  buff/main_cn.csv
 	./main/scripts/mergecsv.py buff/main_cn.csv buff/main.csv buff/pre_final.csv
@@ -18,18 +18,23 @@ buff/main.csv: buff/track2.dump
 	./main/scripts/track2.py -r buff/main_lev.csv buff/track2.dump buff/main.csv
 
 buff/track2.dump: buff/chinese_author.less $(CSV)
-	./pre/build_all_info_athr.py data/Author.csv data/Paper.csv data/PaperAuthor.csv buff/chinese_author.less buff/track2.dump
+	python pre/build_all_info_athr.py data/Author.csv data/Paper.csv data/PaperAuthor.csv buff/chinese_author.less buff/track2.dump
+
+buff/track2_cn.dump: buff/chinese_author.more $(CSV)
+	python pre/build_all_info_cn_athr.py data/Author.csv data/Paper.csv data/PaperAuthor.csv buff/chinese_author.more buff/track2_cn.dump
 
 # Difference to .less version is inclusion of TW.raw & KR.raw
-buff/track2_cn.dump: buff/chinese_author.more $(CSV)
-	./pre/build_all_info_cn_athr.py data/Author.csv data/Paper.csv data/PaperAuthor.csv buff/chinese_author.more buff/track2_cn.dump
-#
 buff/chinese_author.more: $(CSV)
 	mkdir -p buff
-	cd pre/kddcup2013wschin_more && sh ./show_chinese.sh 
+	perl show_chinese.pl data/Author.csv.aid data/Author.csv.name ${CH}/last.more ${CH}/token.all ${CH}/last.ban ${CH}/token.ban | perl show_p.pl > buff/chinese_author.more
+
+
 buff/chinese_author.less: $(CSV)
 	mkdir -p buff
-	cd pre/kddcup2013wschin_less && sh ./show_chinese.sh
+	perl show_chinese.pl data/Author.csv.aid data/Author.csv.name ${CH}/last.less ${CH}/token.all ${CH}/last.ban ${CH}/token.ban|perl show_p.pl > buff/chinese_author.less
+
+data/Author.csv.aid data/Author.csv.name data/Author.csv.affilia: data/Author.csv pre/kddcup2013wschin_less/split_author.pl
+	perl pre/kddcup2013wschin_more/split_author.pl data/Author.csv
 
 $(CSV):
 	mkdir -p data
@@ -39,9 +44,8 @@ $(CSV):
 	tail -n +2 $(RAWDIR)/PaperAuthor.csv > data/PaperAuthor.csv
 	chmod +w data/*
 
-	
 clean:
-	rm -rf buff/* data/* pre/kddcup2013wschin_more/kdd2013/Author.csv* pre/kddcup2013wschin_more/Author.csv* pre/kddcup2013wschin_less/kdd2013/Author.csv* pre/kddcup2013wschin_less/Author.csv* main/kdd/__pycache__/ post/kdd/__pycache__/
+	rm -rf buff/* data/* pre/kddcup2013wschin_more/kdd2013/Author.csv* pre/kddcup2013wschin_more/Author.csv*  main/kdd/__pycache__/ post/kdd/__pycache__/
 
 cleanclean:
 	make clean
