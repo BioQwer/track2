@@ -1,4 +1,4 @@
-all:
+../buf/typo.csv: auto.sh 
 	./auto.sh
 
 clean:

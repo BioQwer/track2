@@ -6,7 +6,7 @@ all: final.csv
 final.csv: data buff buff/typo.csv buff/main1.csv buff/main2.csv
 	make -C merge
 
-buff/typo.csv: buff data
+buff/typo.csv: data
 	make -C typo
 	#ln -sf ../$(FAKEDIR)/typo.csv buff/typo.csv
 

@@ -1,4 +1,6 @@
 mkdir tmpdata
+# TODO it would be much cleaner to do this all in Python 
+# without writing and re-reading all these temp files
 echo 1 generate word frequency
 ./lg_name_a.py ../data/PaperAuthor.csv ../data/Author.csv
 echo 2 sort frequency file
