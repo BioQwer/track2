@@ -1,13 +1,16 @@
 #!/usr/bin/python -u
 import sys, os, pickle
 from collections import defaultdict
-from multiprocessing import Pool
+from multiprocessing import Pool,cpu_count
 from time import time
 from is_abbr import *
 
 
 def select_valid_pair(a):
 	global filtered_name_set
+	# TODO: This is *at least* O(N^2) with 85K names == 7 billion calls to is_abbr
+	# since we only care about prefix matches, we could use a prefix (or 1st letter) index
+	# instead of doing an exhaustive search
 	return [(a, e) for e in filtered_name_set if is_abbr(a, e)]
 
 def main():
@@ -25,9 +28,14 @@ def main():
 	extend_dict = defaultdict(set)
 
 	count = 0
-	p = Pool(8)
+	p = Pool(cpu_count()-1) # leave one core for overhead
+	print '#filtered_name = ',len(filtered_name_set)
 	start = time()
+	
+	# FIXME: The next line takes 6+ hrs on 3 cores! O(N^2)
 	abbr_extend_pair_sets = p.map(select_valid_pair, filtered_name_set)
+	
+	print '# of abbr_extend_pair_sets= ',len(abbr_extend_pair_sets)
 	for pair_set in abbr_extend_pair_sets:
 		for pair in pair_set:
 			abbr_dict[pair[1]].add(pair[0])
@@ -36,7 +44,7 @@ def main():
 	p.close()
 	p.join()
 
-	print (time() - start) / len(filtered_name_set), 'seconds'
+	print (time() - start) / len(filtered_name_set), 'seconds' # 0.27 sec * 85632 = 2312 or 6+ hrs
 	print 'count = ', count
 	with open(os.path.join(sys.argv[2], 'abbr_dict_' + sys.argv[3] + '.pkl'), 'wb') as f:
 		pickle.dump(abbr_dict, f)

@@ -1,6 +1,5 @@
 #!/usr/bin/python -u
 import csv, sys, pickle
-from multiprocessing import Pool
 from filter_v6 import author_name_filter
 from nick_names import replace_nickname
 from DATA import *
