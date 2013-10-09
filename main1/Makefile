@@ -38,11 +38,6 @@ data/Author.csv.aid data/Author.csv.name data/Author.csv.affilia: data/Author.cs
 
 $(CSV):
 	mkdir -p data
-	# Copy data files without header line
-	tail -n +2 $(RAWDIR)/Author.csv > data/Author.csv
-	tail -n +2 $(RAWDIR)/Paper.csv > data/Paper.csv
-	tail -n +2 $(RAWDIR)/PaperAuthor.csv > data/PaperAuthor.csv
-	chmod +w data/*
 
 clean:
 	rm -rf buff/* data/* pre/kddcup2013wschin_more/kdd2013/Author.csv* pre/kddcup2013wschin_more/Author.csv*  main/kdd/__pycache__/ post/kdd/__pycache__/
