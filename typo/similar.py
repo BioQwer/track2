@@ -45,7 +45,7 @@ for l in open(inputfile, 'r').readlines():
 	single_id = l.split(',')[1].strip('\n').strip(' ')
 	if len(name) < 5: continue
 	for dname in dup_name_list:
-		if jellyfish.levenshtein_distance(name, dname) == 1:
+		if jellyfish.levenshtein_distance(unicode(name), unicode(dname)) == 1:
 			for did in dup_id_list[dname]:
 				slastname = idfindname[single_id].split()[len(idfindname[single_id].split())-1]
 				dlastname = idfindname[did].split()[len(idfindname[did].split())-1]
@@ -53,7 +53,7 @@ for l in open(inputfile, 'r').readlines():
 				dlastc = dlastname[len(dlastname)-1]
 				slastcw = slastname[len(slastname)-2]
 				dlastcw = dlastname[len(dlastname)-2]
-				if jellyfish.jaro_distance(idfindname[single_id], idfindname[did]) > 0.85 and (len(name) == len(dname) - 1  or len(name) == len(dname) + 1) and idfindname[single_id][0] == idfindname[did][0] and slastname[0] == dlastname[0] and slastc== dlastc and slastcw == dlastcw and idfindname[single_id].lower().replace(' ','').replace('.','').replace('-','') != idfindname[did].lower().replace(' ','').replace('.','').replace('-',''):
+				if jellyfish.jaro_distance(idfindname[single_id].decode('utf-8'), idfindname[did].decode('utf-8')) > 0.85 and (len(name) == len(dname) - 1  or len(name) == len(dname) + 1) and idfindname[single_id][0] == idfindname[did][0] and slastname[0] == dlastname[0] and slastc== dlastc and slastcw == dlastcw and idfindname[single_id].lower().replace(' ','').replace('.','').replace('-','') != idfindname[did].lower().replace(' ','').replace('.','').replace('-',''):
 					o1.write(idfindname[single_id] + '\n')
 					o2.write(idfindname[did] + '\n')
 					o3.write( single_id +', '+idfindname[single_id] + ', '+did +', '+ idfindname[did] + '\n')
